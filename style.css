@@ -35,3 +35,28 @@ body {
   #allTasks {
     margin-top: 20px;
   }
+
+
+
+  @media (max-width: 768px) {
+    .head {
+      margin-left: 0;
+    }
+    #addTaskForm {
+      margin-bottom: 0;
+    }
+    #taskList {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+    }
+    .task {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    .task button {
+      margin-left: 0;
+    }
+    
+  }

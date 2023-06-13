@@ -1,7 +1,7 @@
  console.log("MY TO-DOs");
-const todoItem = document.getElementById('todo-item');
-const todoText = todoItem.textContent;
-console.log(todoText);
+const mytodo= document.getElementById('todo-list');
+const mytodos = mytodo.textContent;
+console.log(mytodos);
 fetch('https://dummyjson.com/todos')
    .then(response => response.json())
    .then(data => console.log(data))
