@@ -1,12 +1,34 @@
- console.log("MY TO-DOs");
-const mytodo= document.getElementById('todo-list');
-const mytodos = mytodo.textContent;
-console.log(mytodos);
-fetch('https://dummyjson.com/todos')
-   .then(response => response.json())
-   .then(data => console.log(data))
-   .catch(error => console.error(error)); 
+console.log("MY TO-DOs");
+const toDoLists = document.getElementById('todo-list');
+ const getToDoss = () => {
+  return fetch('https://dummyjson.com/todos/user/10')
+    .then(res => res.json())
+    .then(console.log);
+ };
 
+ let toDoList = document.getElementById('todo-list');
+const getToDos = async () => {
+  const todos=await fetch('https://dummyjson.com/todos/user/10')
+    .then(response => response.json())
+    .then(response => response.todos);
+
+  todos.forEach(item => {
+    let div = document.createElement('div');
+    div.className = 'todo';
+    let todo = document.createElement('p');
+    let completed = document.createElement('p');
+
+    todo.innerHTML = item.todo;
+    completed.innerHTML = item.completed;
+
+    div.appendChild(todo);
+    div.appendChild(completed);
+
+    toDoList.appendChild(div);
+  });
+};
+
+getToDos();
 
 const addTaskForm = document.getElementById('addTaskForm');
 const taskInput = document.getElementById('taskInput');
@@ -23,16 +45,27 @@ function createTaskObject(task) {
   };
 }
 
+
 function addTask(event) {
   event.preventDefault();
   const task = taskInput.value.trim();
   if (task !== '') {
-    const newTask = createTaskObject(task);
+    const userID = 10; 
+    const newTask = createTaskObject(task, userID);
     tasks.push(newTask);
     renderTasks();
     taskInput.value = '';
   }
 }
+
+function createTaskObject(task, userID) {
+  return {
+    task: task,
+    userID: userID,
+    createdAt: new Date(),
+  };
+}
+
 
 function renderTasks() {
   taskList.innerHTML = '';
@@ -48,14 +81,19 @@ function renderTasks() {
     `;
     const completeBtn = taskItem.querySelector('.complete-btn');
     completeBtn.addEventListener('click', () => completeTask(task.id));
+
     const editBtn = taskItem.querySelector('.edit-btn');
     editBtn.addEventListener('click', () => editTask(task.id));
+    
+
     const deleteBtn = taskItem.querySelector('.delete-btn');
     deleteBtn.addEventListener('click', () => deleteTask(task.id));
     taskList.appendChild(taskItem);
+
     const taskText = document.createElement('p');
     taskText.textContent = task.task;
     allTasksDiv.appendChild(taskText);
+
   });
   document.body.appendChild(allTasksDiv);
 }
@@ -79,6 +117,7 @@ function editTask(taskId) {
   }
 }
 
+
 function deleteTask(taskId) {
   const taskIndex = tasks.findIndex(task => task.id === taskId);
   if (taskIndex !== -1) {
@@ -90,3 +129,30 @@ function deleteTask(taskId) {
 addTaskForm.addEventListener('submit', addTask);
 
 renderTasks();
+
+
+
+// /* updating tasks
+fetch('https://dummyjson.com/todos/10', {
+  method: 'PUT', 
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    completed: false,
+  })
+})
+.then(res => res.json())
+.then(console.log);
+            
+// to delete
+fetch('https://dummyjson.com/todos/1', {
+  method: 'DELETE',
+})
+.then(res => res.json())
+.then(console.log);
+
+
+
+            
+
+
+
